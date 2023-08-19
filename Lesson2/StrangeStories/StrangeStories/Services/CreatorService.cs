@@ -5,50 +5,19 @@ using StrangeStories.Services.Interface;
 namespace MythAndLegends.Services;
 
 
-public class CreatorService : IStoryService
+public class CreatorService : BaseService,IStoryService
 {
-    public void AddStory()
+    public void AddStory(Story story)
     {
-        Console.WriteLine("Enter story type (myth/legend)");
-        var input = Console.ReadLine();
-        
-        if (input == "legend")
+        if (string.IsNullOrEmpty(story.StoryCode))
         {
-            Console.WriteLine("Enter name of the legend");
-            var name = Console.ReadLine();
-            Console.WriteLine("Enter object of the legend");
-            var storyObject = Console.ReadLine();
-            Console.WriteLine("Enter the story");
-            var storyText = Console.ReadLine();
-
-            var story = new Legend()
-            {
-                Name = name,
-                Object = storyObject,
-                Content = storyText
-            };
-            
-            Storage.Legends.Add(story);
-        }
-        else if (input == "myth")
-        {
-            Console.WriteLine("Enter name of the myth");
-            var name = Console.ReadLine();
-            Console.WriteLine("Enter the story");
-            var storyText = Console.ReadLine();
-            Console.WriteLine("Enter some fact");
-            var fact = Console.ReadLine();
-
-            var story = new Myth()
-            {
-                Name = name,
-                Fact = fact,
-                Content = storyText
-            };
-            
-            Storage.Myths.Add(story);
+            story.StoryCode = CreateCode(story.Name);
         }
         
-        Console.WriteLine("Oops, wrong input");
+        Storage.MythsAndLegends.Add(story);
+    }
+    public Story? GetStoryByCode(string code)
+    {
+        return Storage.MythsAndLegends.FirstOrDefault(x => x.StoryCode.Equals(code));
     }
 }
