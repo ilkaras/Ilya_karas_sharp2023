@@ -14,10 +14,10 @@ public class CreatorService : BaseService,IStoryService
             story.StoryCode = CreateCode(story.Name);
         }
         
-        Storage.MythsAndLegends.Add(story);
+        Storage.Stories.Add(story);
     }
     public Story? GetStoryByCode(string code)
     {
-        return Storage.MythsAndLegends.FirstOrDefault(x => x.StoryCode.Equals(code));
+        return Storage.Stories.FirstOrDefault(x => x.StoryCode.Equals(code));
     }
 }
