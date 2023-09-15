@@ -1,0 +1,27 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Skeleton.DAL.Entities;
+using Skeleton.DAL.Interfaces;
+
+namespace Dal.Repositories;
+
+public class AnswerRepository : BaseRepository<Answer>, IAnswerRepository
+{
+    public AnswerRepository(AppDbContext dbContext) : base(dbContext)
+    {
+    }
+
+    public async Task<bool> CheckIsCorrectAsync(Guid id)
+    {
+        var entity = await GetByIdAsync(id);
+        
+        if (entity.IsCorrect)
+            return true;
+
+        return false;
+    }
+
+    public async Task<IEnumerable<Answer>> GetAllByQuestionIdAsync(Guid questionId)
+    {
+        return await _dbContext.Set<Answer>().Where(x => x.QuestionId == questionId).ToListAsync();
+    }
+}
